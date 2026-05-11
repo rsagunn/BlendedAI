@@ -29,22 +29,9 @@
 		2ECC38622FAA84C400E4CCFB /* BlendedAIUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BlendedAIUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
-/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		2ECC386A2FAA84C400E4CCFB /* Exceptions for "BlendedAI" folder in "BlendedAI" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				Info.plist,
-			);
-			target = 2ECC38462FAA84C200E4CCFB /* BlendedAI */;
-		};
-/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
-
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		2ECC38492FAA84C200E4CCFB /* BlendedAI */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				2ECC386A2FAA84C400E4CCFB /* Exceptions for "BlendedAI" folder in "BlendedAI" target */,
-			);
 			path = BlendedAI;
 			sourceTree = "<group>";
 		};
@@ -293,7 +280,6 @@
 				DEVELOPMENT_TEAM = PB98PRB9DT;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = BlendedAI/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -327,7 +313,6 @@
 				DEVELOPMENT_TEAM = PB98PRB9DT;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = BlendedAI/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
