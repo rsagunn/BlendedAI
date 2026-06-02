@@ -6,6 +6,11 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		2EA6984C2FCE2DF100F938A1 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 2EA6984B2FCE2DF100F938A1 /* FirebaseCore */; };
+		2EA6984D2FCE2DF200F938A1 /* FirebaseAILogic in Frameworks */ = {isa = PBXBuildFile; productRef = 2EA6984E2FCE2DF200F938A1 /* FirebaseAILogic */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		2ECC38592FAA84C400E4CCFB /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -29,6 +34,23 @@
 		2ECC38622FAA84C400E4CCFB /* BlendedAIUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BlendedAIUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		2EA7F4822FCE28120071B630 /* Exceptions for "BlendedAIUITests" folder in "BlendedAI" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				"GoogleService-Info.plist",
+			);
+			target = 2ECC38462FAA84C200E4CCFB /* BlendedAI */;
+		};
+		2EA7F4832FCE28120071B630 /* Exceptions for "BlendedAIUITests" folder in "BlendedAITests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				"GoogleService-Info.plist",
+			);
+			target = 2ECC38572FAA84C400E4CCFB /* BlendedAITests */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		2ECC38492FAA84C200E4CCFB /* BlendedAI */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
@@ -42,6 +64,10 @@
 		};
 		2ECC38652FAA84C400E4CCFB /* BlendedAIUITests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				2EA7F4822FCE28120071B630 /* Exceptions for "BlendedAIUITests" folder in "BlendedAI" target */,
+				2EA7F4832FCE28120071B630 /* Exceptions for "BlendedAIUITests" folder in "BlendedAITests" target */,
+			);
 			path = BlendedAIUITests;
 			sourceTree = "<group>";
 		};
@@ -52,6 +78,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2EA6984C2FCE2DF100F938A1 /* FirebaseCore in Frameworks */,
+				2EA6984D2FCE2DF200F938A1 /* FirebaseAILogic in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -72,12 +100,20 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2EA6984A2FCE2DF100F938A1 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		2ECC383E2FAA84C200E4CCFB = {
 			isa = PBXGroup;
 			children = (
 				2ECC38492FAA84C200E4CCFB /* BlendedAI */,
 				2ECC385B2FAA84C400E4CCFB /* BlendedAITests */,
 				2ECC38652FAA84C400E4CCFB /* BlendedAIUITests */,
+				2EA6984A2FCE2DF100F938A1 /* Frameworks */,
 				2ECC38482FAA84C200E4CCFB /* Products */,
 			);
 			sourceTree = "<group>";
@@ -112,6 +148,8 @@
 			);
 			name = BlendedAI;
 			packageProductDependencies = (
+				2EA6984B2FCE2DF100F938A1 /* FirebaseCore */,
+				2EA6984E2FCE2DF200F938A1 /* FirebaseAILogic */,
 			);
 			productName = BlendedAI;
 			productReference = 2ECC38472FAA84C200E4CCFB /* BlendedAI.app */;
@@ -195,6 +233,9 @@
 			);
 			mainGroup = 2ECC383E2FAA84C200E4CCFB;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				2EA698112FCE2BC400F938A1 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 2ECC38482FAA84C200E4CCFB /* Products */;
 			projectDirPath = "";
@@ -580,6 +621,30 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		2EA698112FCE2BC400F938A1 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 12.14.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		2EA6984B2FCE2DF100F938A1 /* FirebaseCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2EA698112FCE2BC400F938A1 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCore;
+		};
+		2EA6984E2FCE2DF200F938A1 /* FirebaseAILogic */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2EA698112FCE2BC400F938A1 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAILogic;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 2ECC383F2FAA84C200E4CCFB /* Project object */;
 }

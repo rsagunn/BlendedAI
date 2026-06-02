@@ -7,6 +7,16 @@ import SwiftUI
 
 struct ChatView: View {
     @State private var viewModel = ChatViewModel()
+    @State private var viewModel: ChatViewModel
+
+    init() {
+        let gemini = GeminiChatProvider()
+        _viewModel = State(
+            initialValue: ChatViewModel(
+                fetchReply: { try await gemini.reply(to: $0) }
+            )
+        )
+    }
 
     var body: some View {
         ScrollViewReader { proxy in

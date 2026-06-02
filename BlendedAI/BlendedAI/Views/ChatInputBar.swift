@@ -26,10 +26,16 @@ struct ChatInputBar: View {
                 .onSubmit(sendIfPossible)
 
             Button(action: sendIfPossible) { // send the message to the ai
-                Image(systemName: "arrow.up.circle.fill")
-                    .font(.system(size: 34))
-                    .symbolRenderingMode(.hierarchical)
-                    .foregroundStyle(canSend ? Color.accentColor : Color.secondary)
+            Button(action: sendIfPossible) {
+                if isLoading {
+                    ProgressView()
+                        .frame(width: 34, height: 34)
+                } else {
+                    Image(systemName: "arrow.up.circle.fill")
+                        .font(.system(size: 34))
+                        .symbolRenderingMode(.hierarchical)
+                        .foregroundStyle(canSend ? Color.accentColor : Color.secondary)
+                }
             }
             .buttonStyle(.plain)
             .disabled(!canSend) // disable button if user has not typed anything
