@@ -8,6 +8,7 @@ import SwiftUI
 struct ChatInputBar: View {
     @Binding var text: String // what the user is typing
     let canSend: Bool // true if user has typed something
+    var isLoading: Bool = false // true while waiting for ai reply
     let onSend: () -> Void // send the message to the ai
 
     @FocusState private var isFocused: Bool // true if the text field is focused
@@ -18,6 +19,7 @@ struct ChatInputBar: View {
                 .lineLimit(1...6) // grows up to 6 lines
                 .textFieldStyle(.plain)
                 .focused($isFocused)
+                .disabled(isLoading)
                 .padding(.horizontal, 14)
                 .padding(.vertical, 10)
                 .background(Color(.secondarySystemBackground))
@@ -26,7 +28,6 @@ struct ChatInputBar: View {
                 .onSubmit(sendIfPossible)
 
             Button(action: sendIfPossible) { // send the message to the ai
-            Button(action: sendIfPossible) {
                 if isLoading {
                     ProgressView()
                         .frame(width: 34, height: 34)

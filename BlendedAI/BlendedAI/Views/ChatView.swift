@@ -6,7 +6,6 @@
 import SwiftUI
 
 struct ChatView: View {
-    @State private var viewModel = ChatViewModel()
     @State private var viewModel: ChatViewModel
 
     init() {
@@ -43,6 +42,7 @@ struct ChatView: View {
             ChatInputBar( // input bar for typing messages
                 text: $viewModel.draftMessage, // what the user is typing
                 canSend: viewModel.canSend, // true if user has typed something
+                isLoading: viewModel.isLoading, // true while waiting for AI reply
                 onSend: viewModel.send // send the message to the ai
             )
         }

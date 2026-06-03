@@ -25,8 +25,6 @@ final class ChatViewModel {
 
     private let fetchReply: @Sendable (String) async throws -> String // fetch the reply from the ai (async keeps running in bg and throws an error
 
-    var canSend: Bool { // true if user has typed something
-        !draftMessage.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty // true if the text is not empty
     init(fetchReply: @escaping @Sendable (String) async throws -> String = { _ in // initialize the view model
         throw ChatError.providerNotConfigured
     }) {
