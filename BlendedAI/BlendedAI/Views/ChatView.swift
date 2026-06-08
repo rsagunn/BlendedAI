@@ -6,14 +6,16 @@
 import SwiftUI
 
 struct ChatView: View {
+    private let providerHolder: ChatProviderHolder
+
+    @State private var provider: AIProvider = .gemini
     @State private var viewModel: ChatViewModel
 
     init() {
-        let gemini = GeminiChatProvider()
+        let holder = ChatProviderHolder()
+        providerHolder = holder
         _viewModel = State(
-            initialValue: ChatViewModel(
-                fetchReply: { try await gemini.reply(to: $0) }
-            )
+            initialValue: ChatViewModel(fetchReply: holder.fetchReply(for: .gemini))
         )
     }
 
@@ -21,12 +23,12 @@ struct ChatView: View {
         ScrollViewReader { proxy in
             ScrollView {
                 LazyVStack(alignment: .leading, spacing: 12) {
-                    if viewModel.messages.isEmpty { // if no messages show empty state
+                    if viewModel.messages.isEmpty {
                         emptyState
                     } else {
                         ForEach(viewModel.messages) { message in
                             ChatMessageRow(message: message)
-                                .id(message.id) // for scrollTo
+                                .id(message.id)
                         }
                     }
                 }
@@ -48,6 +50,21 @@ struct ChatView: View {
         }
         .navigationTitle("BlendedAI")
         .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .principal) {
+                Picker("AI Provider", selection: $provider) {
+                    ForEach(AIProvider.allCases) { option in
+                        Text(option.displayName).tag(option)
+                    }
+                }
+                .pickerStyle(.segmented)
+                .frame(maxWidth: 200)
+                .disabled(viewModel.isLoading)
+            }
+        }
+        .onChange(of: provider) { _, newProvider in
+            viewModel = ChatViewModel(fetchReply: providerHolder.fetchReply(for: newProvider))
+        }
     }
 
     private var emptyState: some View {
@@ -60,6 +77,7 @@ struct ChatView: View {
             Text("Type a message below.")
                 .font(.subheadline)
                 .foregroundStyle(.secondary)
+                .multilineTextAlignment(.center)
         }
         .frame(maxWidth: .infinity)
         .padding(.top, 80)
