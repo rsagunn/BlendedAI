@@ -5,51 +5,37 @@
 
 import FoundationModels
 import Foundation
-import Playgrounds // testing
 
 enum AppleFMError: LocalizedError {
-    case modelUnavailable(String) // error for when the model is not available
+    case modelUnavailable
 
-    var errorDescription: String? { // description of the error
-        switch self {
-        case .modelUnavailable(let reason):
-            "Apple Intelligence is not available: \(reason)" // error message
-        }
+    var errorDescription: String? {
+        "Apple Intelligence isn't available on this device. Turn it on in Settings, or switch to Gemini."
     }
 }
 
 @MainActor
 final class AppleFMChatProvider {
-    private let session: LanguageModelSession // session with the ai
+    private var session: LanguageModelSession? // session with the ai
 
-    init() {
-        session = LanguageModelSession(
-            instructions: "You are a helpful assistant. Be concise." // instructions for the ai
+    private func sessionOrCreate() -> LanguageModelSession {
+        if let session { return session }
+        let session = LanguageModelSession(
+            instructions: "You are a helpful assistant. Be concise."
         )
+        self.session = session
+        return session
     }
 
     func reply(to userMessage: String) async throws -> String {
         switch SystemLanguageModel.default.availability { // check if the model is available
         case .available:
             break
-        case .unavailable(let reason):
-            throw AppleFMError.modelUnavailable(String(describing: reason)) // throw error if the model is not available
+        case .unavailable:
+            throw AppleFMError.modelUnavailable
         }
 
-        let response = try await session.respond(to: userMessage) // send the message to the ai
-        return response.content // return the response from the ai
-    }
-}
-
-#Playground {
-    let provider = await AppleFMChatProvider()
-    
-    do {
-        let reply = try await provider.reply(to: "Why is the sky blue?")
-        print("AI Response: \(reply)")
-    } catch let error as LanguageModelSession.GenerationError {	
-        print("Detailed Framework Error: \(error)")
-    } catch {
-        print("General Error: \(error.localizedDescription)")
+        let response = try await sessionOrCreate().respond(to: userMessage)
+        return response.content
     }
 }
