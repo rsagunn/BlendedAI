@@ -35,8 +35,8 @@ final class ChatViewModel {
     }
 
     func replaceMessages(_ messages: [ChatMessage]) {
-        self.messages = messages
-        draftMessage = ""
+        self.messages = messages // replace
+        draftMessage = "" // clear
         isLoading = false
     }
 
