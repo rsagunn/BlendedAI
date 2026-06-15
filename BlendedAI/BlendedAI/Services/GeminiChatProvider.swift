@@ -10,7 +10,7 @@ enum GeminiErrorFormatter {
     static func message(for error: Error) -> String {
         if let error = error as? GenerateContentError {
             switch error {
-            case .internalError(let underlying):
+            case .internalError(let underlying): // underlying: original error
                 let detail = underlying.localizedDescription
                 if detail.isEmpty || detail.contains("error 0") {
                     return "I didnt get a reply from Gemini. Give it a minute and try again."
@@ -35,10 +35,10 @@ final class GeminiChatProvider {
 
     init(messages: [ChatMessage] = []) {
         let ai = FirebaseAI.firebaseAI(backend: .googleAI())
-        let model = ai.generativeModel(modelName: "gemini-2.5-flash")
+        let model = ai.generativeModel(modelName: "gemini-2.5-flash") // use gemini flash 2.5
         let history = messages.map { message in
             ModelContent(
-                role: message.role == .user ? "user" : "model",
+                role: message.role == .user ? "user" : "model", // extract roles
                 parts: message.text
             )
         }
