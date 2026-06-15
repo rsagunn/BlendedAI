@@ -36,9 +36,9 @@ final class AppleFMChatProvider {
     func configure(messages: [ChatMessage]) {
         if messages.isEmpty {
             session = LanguageModelSession(instructions: Self.instructions)
-        } else if let transcript = Self.transcript(from: messages) {
+        } else if let transcript = Self.transcript(from: messages) { // convert msgs into transcript
             session = LanguageModelSession(transcript: transcript)
-        } else {
+        } else { // if nothing then go back to normal instructions
             session = LanguageModelSession(instructions: Self.instructions)
         }
     }
@@ -51,25 +51,25 @@ final class AppleFMChatProvider {
             throw AppleFMError.modelUnavailable
         }
 
-        if session == nil {
+        if session == nil { // if not created then create one
             configure(messages: [])
         }
 
         do {
-            let response = try await session!.respond(to: userMessage)
+            let response = try await session!.respond(to: userMessage) // async call 
             return response.content
         } catch let error as LanguageModelSession.GenerationError {
-            throw AppleFMError.generationFailed(error.localizedDescription)
+            throw AppleFMError.generationFailed(error.localizedDescription) // convert generation error to custom error
         } catch {
-            throw AppleFMError.generationFailed(error.localizedDescription)
+            throw AppleFMError.generationFailed(error.localizedDescription) // convery any other error to custom error
         }
     }
 
     private static func transcript(from messages: [ChatMessage]) -> Transcript? {
-        var entries: [Transcript.Entry] = []
+        var entries: [Transcript.Entry] = [] // open list to keep transcript
 
         for message in messages {
-            let segments = [Transcript.Segment.text(Transcript.TextSegment(content: message.text))]
+            let segments = [Transcript.Segment.text(Transcript.TextSegment(content: message.text))] // turn into apple format
 
             switch message.role {
             case .user:
@@ -79,7 +79,7 @@ final class AppleFMChatProvider {
             }
         }
 
-        guard !entries.isEmpty else { return nil }
+        guard !entries.isEmpty else { return nil } // only return if there is a conversation
         return Transcript(entries: entries)
     }
 }
