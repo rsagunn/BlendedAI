@@ -18,11 +18,11 @@ struct ChatView: View {
         let holder = ChatProviderHolder()
         providerHolder = holder
         let session = chatList.currentSession
-        let provider = session?.provider ?? .gemini
-        let messages = session?.messages ?? []
+        let provider = session?.provider ?? .gemini // take provider from session ( gemini is defaulted)
+        let messages = session?.messages ?? [] // take messages( default is just an empty array)
         holder.prepareForSession(provider: provider, messages: messages)
-        _provider = State(initialValue: provider)
-        _viewModel = State(
+        _provider = State(initialValue: provider) // what ai provider
+        _viewModel = State( // show view model
             initialValue: ChatViewModel(
                 messages: messages,
                 fetchReply: holder.fetchReply(for: provider)
@@ -31,12 +31,12 @@ struct ChatView: View {
     }
 
     var body: some View {
-        ScrollViewReader { proxy in
+        ScrollViewReader { proxy in // scroll all the way to recent msg when you send text
             ScrollView {
                 LazyVStack(alignment: .leading, spacing: 12) {
                     if viewModel.messages.isEmpty {
                         emptyState
-                    } else {
+                    } else { // go through al msg and show all message
                         ForEach(viewModel.messages) { message in
                             ChatMessageRow(message: message)
                                 .id(message.id)
@@ -126,8 +126,8 @@ struct ChatView: View {
     }
 
     private func loadCurrentSession() {
-        guard let session = chatList.currentSession else { return }
-        providerHolder.prepareForSession(provider: session.provider, messages: session.messages)
+        guard let session = chatList.currentSession else { return } // check if a session exist
+        providerHolder.prepareForSession(provider: session.provider, messages: session.messages) // prepare for session
         provider = session.provider
         viewModel = ChatViewModel(
             messages: session.messages,
@@ -135,9 +135,9 @@ struct ChatView: View {
         )
     }
 
-    private func scrollToLatest(using proxy: ScrollViewProxy) {
-        guard let lastID = viewModel.messages.last?.id else { return }
-        withAnimation(.easeOut(duration: 0.2)) {
+    private func scrollToLatest(using proxy: ScrollViewProxy) { // scroll to latest message
+        guard let lastID = viewModel.messages.last?.id else { return } // get id of last message
+        withAnimation(.easeOut(duration: 0.2)) { // animate that message
             proxy.scrollTo(lastID, anchor: .bottom)
         }
     }
