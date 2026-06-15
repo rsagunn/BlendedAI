@@ -7,13 +7,13 @@ import Foundation
 
 // who is talking
 // apple fm and gemini is assistant
-enum ChatRole {
+enum ChatRole: String, Codable {
     case user
     case assistant
 }
 
 // a line
-struct ChatMessage: Identifiable, Equatable {
+struct ChatMessage: Identifiable, Equatable, Codable {
     let id: UUID // an id for message
     let role: ChatRole // visibly marks whos talking
     let text: String // text

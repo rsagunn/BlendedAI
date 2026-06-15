@@ -25,10 +25,19 @@ final class ChatViewModel {
 
     private let fetchReply: @Sendable (String) async throws -> String // fetch the reply from the ai (async keeps running in bg and throws an error
 
-    init(fetchReply: @escaping @Sendable (String) async throws -> String = { _ in // initialize the view model
+    init(
+        messages: [ChatMessage] = [],
+        fetchReply: @escaping @Sendable (String) async throws -> String = { _ in
         throw ChatError.providerNotConfigured
     }) {
-        self.fetchReply = fetchReply // set the fetch reply function
+        self.messages = messages
+        self.fetchReply = fetchReply
+    }
+
+    func replaceMessages(_ messages: [ChatMessage]) {
+        self.messages = messages
+        draftMessage = ""
+        isLoading = false
     }
 
     var canSend: Bool {

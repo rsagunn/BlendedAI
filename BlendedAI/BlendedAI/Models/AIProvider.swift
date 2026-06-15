@@ -5,7 +5,7 @@
 
 import Foundation
 
-enum AIProvider: String, CaseIterable, Identifiable {
+enum AIProvider: String, CaseIterable, Identifiable, Codable {
     case apple
     case gemini
 

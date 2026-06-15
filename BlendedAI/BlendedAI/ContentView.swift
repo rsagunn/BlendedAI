@@ -9,9 +9,11 @@ import SwiftUI
 
 
 struct ContentView: View {
+    @State private var chatList = ChatListStore()
+
     var body: some View {
         NavigationStack {
-            ChatView()
+            ChatView(chatList: chatList)
         }
     }
 }

@@ -31,12 +31,18 @@ enum GeminiErrorFormatter {
 
 @MainActor
 final class GeminiChatProvider {
-    private let chat: Chat
+    private var chat: Chat
 
-    init() {
+    init(messages: [ChatMessage] = []) {
         let ai = FirebaseAI.firebaseAI(backend: .googleAI())
         let model = ai.generativeModel(modelName: "gemini-2.5-flash")
-        chat = model.startChat()
+        let history = messages.map { message in
+            ModelContent(
+                role: message.role == .user ? "user" : "model",
+                parts: message.text
+            )
+        }
+        chat = model.startChat(history: history)
     }
 
     func reply(to userMessage: String) async throws -> String {
