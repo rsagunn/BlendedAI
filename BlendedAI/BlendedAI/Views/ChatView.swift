@@ -19,10 +19,12 @@ struct ChatView: View {
         providerHolder = holder
         let session = chatList.currentSession
         let provider = session?.provider ?? .gemini
+        let messages = session?.messages ?? []
+        holder.prepareForSession(provider: provider, messages: messages)
         _provider = State(initialValue: provider)
         _viewModel = State(
             initialValue: ChatViewModel(
-                messages: session?.messages ?? [],
+                messages: messages,
                 fetchReply: holder.fetchReply(for: provider)
             )
         )
@@ -84,6 +86,7 @@ struct ChatView: View {
             NavigationStack {
                 ChatListView(
                     chatList: chatList,
+                    currentProvider: provider,
                     onNewChat: loadCurrentSession,
                     onSelectChat: loadCurrentSession
                 )
@@ -94,6 +97,7 @@ struct ChatView: View {
         }
         .onChange(of: provider) { _, newProvider in
             let messages = viewModel.messages
+            providerHolder.prepareForSession(provider: newProvider, messages: messages)
             viewModel = ChatViewModel(
                 messages: messages,
                 fetchReply: providerHolder.fetchReply(for: newProvider)
@@ -123,6 +127,7 @@ struct ChatView: View {
 
     private func loadCurrentSession() {
         guard let session = chatList.currentSession else { return }
+        providerHolder.prepareForSession(provider: session.provider, messages: session.messages)
         provider = session.provider
         viewModel = ChatViewModel(
             messages: session.messages,

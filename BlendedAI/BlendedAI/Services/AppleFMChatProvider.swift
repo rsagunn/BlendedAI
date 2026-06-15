@@ -8,9 +8,19 @@ import Foundation
 
 enum AppleFMError: LocalizedError {
     case modelUnavailable
+    case generationFailed(String)
 
     var errorDescription: String? {
-        "Apple Intelligence isn't available on this device. Turn it on in Settings, or switch to Gemini."
+        switch self {
+        case .modelUnavailable:
+            "Apple Intelligence isn't available on this device. Turn it on in Settings, or switch to Gemini."
+        case .generationFailed(let detail):
+            if detail.lowercased().contains("operation couldn’t be completed") || detail.contains("error -1") {
+                "Apple Intelligence could not generate that reply on this device. Try again on a supported device or switch to Gemini."
+            } else {
+                "Apple Intelligence could not generate a reply right now. \(detail)"
+            }
+        }
     }
 }
 
@@ -45,19 +55,27 @@ final class AppleFMChatProvider {
             configure(messages: [])
         }
 
-        let response = try await session!.respond(to: userMessage)
-        return response.content
+        do {
+            let response = try await session!.respond(to: userMessage)
+            return response.content
+        } catch let error as LanguageModelSession.GenerationError {
+            throw AppleFMError.generationFailed(error.localizedDescription)
+        } catch {
+            throw AppleFMError.generationFailed(error.localizedDescription)
+        }
     }
 
     private static func transcript(from messages: [ChatMessage]) -> Transcript? {
         var entries: [Transcript.Entry] = []
 
         for message in messages {
+            let segments = [Transcript.Segment.text(Transcript.TextSegment(content: message.text))]
+
             switch message.role {
             case .user:
-                entries.append(.prompt(Prompt(message.text)))
+                entries.append(.prompt(Transcript.Prompt(segments: segments)))
             case .assistant:
-                entries.append(.response(Response(message.text)))
+                entries.append(.response(Transcript.Response(assetIDs: [], segments: segments)))
             }
         }
 
